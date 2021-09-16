@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.demo.retrofit.config.Config;
 import com.demo.retrofit.util.NetworkUtil;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tencent.mmkv.MMKV;
@@ -23,8 +24,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
- 
- 
+
+
+import io.reactivex.internal.schedulers.RxThreadFactory;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -898,7 +900,7 @@ public class RetrofitManager {
 
         ExecutorService singleThreadPool = new ThreadPoolExecutor(1, 1,
                 0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
+                new LinkedBlockingQueue<Runnable>(1024),namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
  
         // 网络框架
         Retrofit retrofit = new Retrofit.Builder()
