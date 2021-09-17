@@ -5,33 +5,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.demo.retrofit.entity.BadRequestBean;
 import com.demo.retrofit.entity.LoginResp;
-import com.demo.retrofit.entity.TmpSecurityToken;
 import com.demo.retrofit.entity.UserInfo;
-import com.demo.retrofit.http.ApiService;
 import com.demo.retrofit.http.CustomCallBack;
-import com.demo.retrofit.http.HttpBaseParamsInterceptor;
 import com.demo.retrofit.http.OkHttpHelper;
+import com.demo.retrofit.other.ResultHandler;
+import com.demo.retrofit.other.HttpManager;
 import com.tencent.mmkv.MMKV;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.demo.retrofit.http.ApiService.URL_LOGIN;
 
 public class MainActivity extends AppCompatActivity {
-
-    public static final String SERVER_URL_RELEASE = "https://api.sys.simplysmartframe.com";
-
-
 
     @BindView(R.id.btnSubmit)
     Button btnSubmit;
@@ -46,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         MMKV.initialize(this);
         ButterKnife.bind(this);
 
-
         btnSubmit.setOnClickListener(view -> {
             OkHttpHelper.getInstance().login(this, new CustomCallBack<LoginResp>() {
                 @Override
@@ -58,6 +49,37 @@ public class MainActivity extends AppCompatActivity {
                 public boolean onError(BadRequestBean badRequestBean) {
 
                     return false;
+                }
+            });
+
+            Map<String, Object> params = new HashMap<>();
+
+//            login(@Field("username") String username, @Field("password") String password, @Field("grant_type") String type, @Field("client_id")
+            params.put("username", "945401414@qq.com");
+            params.put("password", "a123456");
+            params.put("grant_type", "password");
+            params.put("client_id", "app");
+
+            HttpManager.sendPostRequestForm(URL_LOGIN, params, LoginResp.class, new ResultHandler<LoginResp>(this) {
+                @Override
+                public void onBeforeRequest() {
+
+                }
+
+                @Override
+                public void onSuccess(LoginResp loginResp) {
+
+                    Log.e("http>>>>>", "TOKEN>>>>>:" + loginResp.access_token);
+                }
+
+                @Override
+                public boolean onError(BadRequestBean badRequestBean) {
+                    return false;
+                }
+
+                @Override
+                public void onFinish() {
+
                 }
             });
         });
@@ -77,8 +99,5 @@ public class MainActivity extends AppCompatActivity {
             });
         });
     }
-
-
-
 
 }

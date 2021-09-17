@@ -7,6 +7,9 @@ import android.net.NetworkInfo;
 public class NetworkUtil {
 
     public static boolean isNetworkConnected(Context context){
+
+
+
         return true;
     }
 }

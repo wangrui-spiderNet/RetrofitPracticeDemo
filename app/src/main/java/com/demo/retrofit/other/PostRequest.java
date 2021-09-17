@@ -1,8 +1,8 @@
 package com.demo.retrofit.other;
- 
+
 
 import java.util.Map;
- 
+
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -12,11 +12,9 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.Part;
-import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
- 
+
 /**
  * @author xuwei
  * on 2019/9/26
@@ -30,7 +28,7 @@ public interface PostRequest {
      * @return
      */
     @POST
-    Call<ResponseBody> postUrl(@HeaderMap Map<String, String> headers,@Url String url);
+    Call<ResponseBody> postUrl(@Url String url);
  
     /**
      * 发送Post请求 表单
@@ -40,7 +38,7 @@ public interface PostRequest {
      */
     @FormUrlEncoded
     @POST
-    Call<ResponseBody> postForm(@HeaderMap Map<String, String> headers,@Url String url, @FieldMap Map<String, Object> requestMap);
+    Call<ResponseBody> postForm(@Url String url, @FieldMap Map<String, Object> requestMap);
  
     /**
      * 发送Post请求  json
@@ -49,7 +47,7 @@ public interface PostRequest {
      * @return
      */
     @POST
-    Call<ResponseBody> postJson(@HeaderMap Map<String, String> headers, @Url String url, @Body RequestBody route);
+    Call<ResponseBody> postJson( @Url String url, @Body RequestBody route);
  
     /**
      * 发送Post请求  二进制流
@@ -60,7 +58,7 @@ public interface PostRequest {
      */
     @Multipart
     @POST
-    Call<ResponseBody> postStream(@HeaderMap Map<String, String> headers,@Url String url, @FieldMap Map<String, Object> options, @Part("file") RequestBody file);
+    Call<ResponseBody> postStream(@Url String url, @FieldMap Map<String, Object> options, @Part("file") RequestBody file);
  
  
 }
